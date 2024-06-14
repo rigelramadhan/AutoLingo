@@ -2,7 +2,8 @@ package one.reevdev.autolingo.core.data.prompts
 
 object ResponseRule {
     val QuestionJson = """
-        Please return a JSON response with the following structure:
+        Please return a raw JSON response with the following structure without any formatting because
+        it will be deserialized by GSON:
         
         {
           "status": "success/error",

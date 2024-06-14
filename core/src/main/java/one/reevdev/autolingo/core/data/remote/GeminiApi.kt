@@ -31,12 +31,12 @@ class GeminiApi @Inject constructor() {
     init {
         multipleQuestionHistory.add(
             content {
-                text("Hello")
+                text("From this point on, you will be asked multiple choice questions. Give response as I instructed.")
             }
         )
         fillInBlankHistory.add(
             content {
-                text("Hello")
+                text("From this point on, you will be asked fill in the blank questions. Give response as I instructed.")
             }
         )
     }
@@ -58,8 +58,19 @@ class GeminiApi @Inject constructor() {
                 text(questionInstruction)
             }
             val response = chat.sendMessage(content).text.orEmpty()
-                .toKotlin(GeneratedQuestion::class.java)
-            emit(Resource.Success(response))
+
+
+            when (type) {
+                QuestionType.MultipleChoice -> multipleQuestionHistory.apply {
+                    add(content)
+                    add(content("model") { text(response) })
+                }
+                QuestionType.FillInBlank -> fillInBlankHistory.apply {
+                    add(content)
+                    add(content("model") { text(response) })
+                }
+            }
+            emit(Resource.Success(response.toKotlin(GeneratedQuestion::class.java)))
         } catch (e: Exception) {
             emit(Resource.Error(e.message.orEmpty(), e))
         }
