@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -20,6 +21,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +29,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -35,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import one.reevdev.autolingo.R
 import one.reevdev.autolingo.model.ExerciseType
+import one.reevdev.autolingo.ui.component.AppHeader
 import one.reevdev.autolingo.ui.theme.AutoLingoTheme
 
 @Composable
@@ -42,7 +46,8 @@ fun ExerciseScreen(
     modifier: Modifier = Modifier,
     type: ExerciseType,
     question: String,
-    choices: List<String>? = null
+    choices: List<String>? = null,
+    correctAnswer: String? = null,
 ) {
     var hasAnswered by rememberSaveable { mutableStateOf(false) }
 
@@ -51,8 +56,10 @@ fun ExerciseScreen(
             .padding(16.dp)
             .fillMaxSize()
     ) {
+        AppHeader()
         Card(
             modifier = Modifier
+                .padding(top = 8.dp)
         ) {
             Text(
                 modifier = Modifier
@@ -89,7 +96,7 @@ fun ExerciseScreen(
                 var answer by rememberSaveable { mutableStateOf("") }
                 FillBlank(
                     answer = answer,
-                    onAnswerChange = { answer = it }
+                    onAnswerChange = { answer = it },
                 )
             }
         }
@@ -156,6 +163,8 @@ fun FillBlank(
 ) {
     Column(
         modifier = modifier
+            .padding(top = 16.dp)
+            .fillMaxWidth()
     ) {
         TextField(
             modifier = Modifier,
@@ -163,7 +172,14 @@ fun FillBlank(
             onValueChange = onAnswerChange,
             label = {
                 Text(text = stringResource(R.string.label_fill_blank_field))
-            }
+            },
+            shape = RoundedCornerShape(8.dp),
+            colors = TextFieldDefaults.colors().copy(
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+            )
         )
     }
 }
@@ -175,11 +191,12 @@ fun FeedbackCard(
     feedback: String,
 ) {
     OutlinedCard(
-        modifier = modifier
+        modifier = modifier,
+        shape = RoundedCornerShape(32.dp)
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

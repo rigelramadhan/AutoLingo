@@ -22,6 +22,17 @@ class ExerciseInteractor @Inject constructor(
                 is Resource.Success -> Resource.Success(it.data.toMultipleChoiceDomain())
             }
         }
+//        return flow {
+//            emit(
+//                Resource.Success(
+//                    data = MultipleChoiceQuestion(
+//                        question = "What is the capital of France?",
+//                        choices = listOf("Paris", "London", "Berlin", "Madrid"),
+//                        correctAnswer = "Paris"
+//                    )
+//                )
+//            )
+//        }
     }
 
     override fun getFillInTheBlankQuestion(): Flow<Resource<FillInTheBlankQuestion>> {
@@ -32,6 +43,16 @@ class ExerciseInteractor @Inject constructor(
                 is Resource.Success -> Resource.Success(it.data.toFillInTheBlankDomain())
             }
         }
+//        return flow {
+//            emit(
+//                Resource.Success(
+//                    data = FillInTheBlankQuestion(
+//                        question = "What is the capital of France?",
+//                        answer = "Paris"
+//                    )
+//                )
+//            )
+//        }
     }
 
     override fun answerMultipleChoiceQuestion(answer: String): Flow<Resource<AnswerFeedback>> {
