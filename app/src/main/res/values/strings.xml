@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AutoLingo</string>
+    <string name="title_card_multiple_choice">Try Multiple Choice Questions!</string>
+    <string name="description_card_multiple_choice"><![CDATA[Fun & interactive quizzes test your grasp of grammar, vocabulary & comprehension. Choose the best answer & get instant feedback to solidify your learning.]]></string>
+    <string name="title_card_fill_blank">Try Fill-in-the-Blank Questions!</string>
+    <string name="description_card_fill_blank"><![CDATA[Master grammar hands-on! Build sentences by filling the blanks & receive helpful explanations. Learn by doing, not just selecting.]]></string>
+    <string name="label_fill_blank_field">What\'s in the blank?</string>
+    <string name="title_multiple_choice_exercise">Multiple Choice Exercise</string>
+    <string name="title_fill_blank_exercise">Fill in the Blank Exercise</string>
 </resources>
