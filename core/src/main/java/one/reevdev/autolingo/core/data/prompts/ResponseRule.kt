@@ -1,9 +1,13 @@
 package one.reevdev.autolingo.core.data.prompts
 
 object ResponseRule {
-    val QuestionJson = """
-        Please return a raw JSON response with the following structure without any formatting because
+    private const val JSON_GENERAL_RULE= """
+        Please return a raw JSON response with the following structure without any formatting because 
         it will be deserialized by GSON:
+    """
+
+    val QuestionJson = """
+        $JSON_GENERAL_RULE
         
         {
           "status": "success/error",
@@ -31,7 +35,7 @@ object ResponseRule {
     """.trimIndent()
 
     val FeedbackJson = """
-        Please return a JSON response with the following structure:
+        $JSON_GENERAL_RULE
         
         {
           "userAnswer": "answer_here>",

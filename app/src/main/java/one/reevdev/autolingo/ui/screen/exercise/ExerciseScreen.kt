@@ -15,6 +15,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -48,8 +49,13 @@ fun ExerciseScreen(
     question: String,
     choices: List<String>? = null,
     correctAnswer: String? = null,
+    feedback: String,
+    isDone: Boolean,
+    onSubmitAnswer: (String) -> Unit,
 ) {
     var hasAnswered by rememberSaveable { mutableStateOf(false) }
+    val (selected, onSelect) = rememberSaveable { mutableStateOf("") }
+    var answer by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -80,7 +86,6 @@ fun ExerciseScreen(
         when (type) {
             ExerciseType.Multiple -> {
                 choices?.let {
-                    val (selected, onSelect) = rememberSaveable { mutableStateOf("") }
                     MultipleAnswers(
                         modifier = Modifier
                             .padding(horizontal = 8.dp)
@@ -93,7 +98,6 @@ fun ExerciseScreen(
             }
 
             ExerciseType.FillBlank -> {
-                var answer by rememberSaveable { mutableStateOf("") }
                 FillBlank(
                     answer = answer,
                     onAnswerChange = { answer = it },
@@ -105,14 +109,17 @@ fun ExerciseScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
+                val finalAnswer = if (type == ExerciseType.FillBlank) answer else selected
+                onSubmitAnswer(finalAnswer)
                 hasAnswered = true
             },
+            enabled = !isDone
         ) {
             Text(text = "Submit")
         }
         if (hasAnswered) {
             Spacer(modifier = Modifier.height(16.dp))
-            FeedbackCard(correct = false, feedback = "It can be better")
+            FeedbackCard(correct = isDone, feedback = feedback)
         }
     }
 }
@@ -192,7 +199,10 @@ fun FeedbackCard(
 ) {
     OutlinedCard(
         modifier = modifier,
-        shape = RoundedCornerShape(32.dp)
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.outlinedCardColors().copy(
+            containerColor = if (correct) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer
+        )
     ) {
         Row(
             modifier = Modifier
@@ -201,8 +211,8 @@ fun FeedbackCard(
         ) {
             Icon(
                 modifier = Modifier
-                    .size(24.dp)
-                    .padding(end = 4.dp),
+                    .size(36.dp)
+                    .padding(end = 16.dp),
                 painter = painterResource(R.drawable.ic_check_circle_outline),
                 contentDescription = "Answer result icon",
                 tint = if (correct) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
@@ -229,7 +239,10 @@ private fun ExerciseScreenPreview() {
                 "look up",
                 "check",
                 "define",
-            )
+            ),
+            feedback = "",
+            isDone = false,
+            onSubmitAnswer = {}
         )
     }
 }

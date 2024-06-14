@@ -29,7 +29,12 @@ fun ExerciseRouter(
             type = type,
             question = uiState.question,
             choices = uiState.choices,
-            correctAnswer = uiState.answer
+            correctAnswer = uiState.answer,
+            feedback = uiState.feedback,
+            isDone = uiState.isDone,
+            onSubmitAnswer = {
+                viewModel.answerMultipleChoice(it)
+            }
         )
     }
 }
