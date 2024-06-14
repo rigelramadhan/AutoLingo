@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import one.reevdev.autolingo.core.BuildConfig
 import one.reevdev.autolingo.core.data.enumerations.QuestionType
+import one.reevdev.autolingo.core.data.prompts.ModelInitialization
 import one.reevdev.autolingo.core.data.prompts.QuestionPrompt
 import one.reevdev.autolingo.core.data.prompts.ResponseRule
 import one.reevdev.autolingo.core.data.remote.model.AnswerFeedback
@@ -31,12 +32,12 @@ class GeminiApi @Inject constructor() {
     init {
         multipleQuestionHistory.add(
             content {
-                text("From this point on, you will be asked multiple choice questions. Give response as I instructed.")
+                text(ModelInitialization.multipleChoiceSetup)
             }
         )
         fillInBlankHistory.add(
             content {
-                text("From this point on, you will be asked fill in the blank questions. Give response as I instructed.")
+                text(ModelInitialization.fillTheBlankSetup)
             }
         )
     }
@@ -93,8 +94,18 @@ class GeminiApi @Inject constructor() {
                 text(prompt.plus(answer))
             }
             val response = chat.sendMessage(content).text.orEmpty()
-                .toKotlin(AnswerFeedback::class.java)
-            emit(Resource.Success(response))
+
+            when (type) {
+                QuestionType.MultipleChoice -> multipleQuestionHistory.apply {
+                    add(content)
+                    add(content("model") { text(response) })
+                }
+                QuestionType.FillInBlank -> fillInBlankHistory.apply {
+                    add(content)
+                    add(content("model") { text(response) })
+                }
+            }
+            emit(Resource.Success(response.toKotlin(AnswerFeedback::class.java)))
         } catch(e: Exception) {
             emit(Resource.Error(e.message.orEmpty(), e))
         }

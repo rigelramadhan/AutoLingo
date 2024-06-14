@@ -14,10 +14,10 @@ object QuestionPrompt {
     """.trimIndent()
 
     val requestMultipleChoiceFeedback = """
-        
+        This is the user's answer (give constructive feedback to the user and why it is correct/wrong):
     """.trimIndent()
 
     val requestFillInBlankFeedback = """
-        
+        This is the user's answer (give constructive feedback to the user and why it is correct/wrong):
     """.trimIndent()
 }
