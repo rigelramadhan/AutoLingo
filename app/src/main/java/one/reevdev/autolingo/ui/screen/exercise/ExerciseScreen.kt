@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.RadioButton
@@ -50,10 +51,10 @@ fun ExerciseScreen(
     choices: List<String>? = null,
     correctAnswer: String? = null,
     feedback: String,
+    hasAnswered: Boolean = false,
     isDone: Boolean,
     onSubmitAnswer: (String) -> Unit,
 ) {
-    var hasAnswered by rememberSaveable { mutableStateOf(false) }
     val (selected, onSelect) = rememberSaveable { mutableStateOf("") }
     var answer by rememberSaveable { mutableStateOf("") }
 
@@ -89,9 +90,10 @@ fun ExerciseScreen(
                     MultipleAnswers(
                         modifier = Modifier
                             .padding(horizontal = 8.dp)
-                            .padding(top = 16.dp),
+                            .padding(top = 24.dp, bottom = 8.dp),
                         choices = choices,
                         selected = selected,
+                        enabled = !isDone,
                         onSelect = onSelect
                     )
                 }
@@ -111,7 +113,6 @@ fun ExerciseScreen(
             onClick = {
                 val finalAnswer = if (type == ExerciseType.FillBlank) answer else selected
                 onSubmitAnswer(finalAnswer)
-                hasAnswered = true
             },
             enabled = !isDone
         ) {
@@ -129,12 +130,13 @@ fun MultipleAnswers(
     modifier: Modifier = Modifier,
     choices: List<String>,
     selected: String,
+    enabled: Boolean,
     onSelect: (String) -> Unit,
 ) {
     Column(
         modifier = modifier
             .selectableGroup(),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         choices.forEach { choice ->
             Row(
@@ -142,16 +144,17 @@ fun MultipleAnswers(
                     .fillMaxWidth()
                     .selectable(
                         selected = (choice == selected),
-                        onClick = { onSelect(choice) },
+                        onClick = { if (enabled) onSelect(choice) },
                         role = Role.RadioButton
                     ),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(
                     modifier = Modifier
                         .padding(end = 8.dp),
                     selected = choice == selected,
-                    onClick = null
+                    onClick = null,
+                    enabled = enabled
                 )
                 Text(
                     text = choice,
@@ -197,11 +200,19 @@ fun FeedbackCard(
     correct: Boolean,
     feedback: String,
 ) {
+    val containerColor = if (feedback.isBlank()) {
+        MaterialTheme.colorScheme.surface
+    } else if (correct) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.errorContainer
+    }
     OutlinedCard(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.outlinedCardColors().copy(
-            containerColor = if (correct) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer
+            containerColor = containerColor
         )
     ) {
         Row(
@@ -209,19 +220,23 @@ fun FeedbackCard(
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                modifier = Modifier
-                    .size(36.dp)
-                    .padding(end = 16.dp),
-                painter = painterResource(R.drawable.ic_check_circle_outline),
-                contentDescription = "Answer result icon",
-                tint = if (correct) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-            )
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = feedback,
-            )
+            if (feedback.isBlank()) {
+                LinearProgressIndicator(Modifier.fillMaxWidth())
+            } else {
+                Icon(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 16.dp),
+                    painter = painterResource(R.drawable.ic_check_circle_outline),
+                    contentDescription = "Answer result icon",
+                    tint = if (correct) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                )
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = feedback,
+                )
+            }
         }
     }
 }

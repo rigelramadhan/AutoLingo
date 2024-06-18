@@ -38,7 +38,7 @@ object ResponseRule {
         $JSON_GENERAL_RULE
         
         {
-          "userAnswer": "answer_here>",
+          "userAnswer": "<answer_here>",
           "feedback": {
             "correct": <true/false>,
             "reasoning": "<explanation_why_answer_is_correct/incorrect>"

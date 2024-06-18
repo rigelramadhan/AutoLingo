@@ -140,6 +140,68 @@ class ExerciseViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = true,
                                     error = null,
+                                    feedback = ""
+                                )
+                            }
+                        }
+
+                        is Resource.Success -> {
+                            _uiState.update {
+                                if (data.data.feedback?.correct == true) {
+                                    it.copy(
+                                        isLoading = false,
+                                        error = null,
+                                        feedback = data.data.feedback?.reasoning.orEmpty(),
+                                        isDone = true
+                                    )
+                                } else {
+                                    it.copy(
+                                        isLoading = false,
+                                        error = null,
+                                        feedback = data.data.feedback?.reasoning.orEmpty()
+                                    )
+                                }
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = data.message,
+                                )
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    fun answerFillTheBlank(answer: String) {
+        _uiState.update {
+            it.copy(
+                isLoading = true
+            )
+        }
+
+        viewModelScope.launch {
+            exerciseUseCase.answerFillInTheBlankQuestion(answer)
+                .catch {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = it.error,
+                        )
+                    }
+                }
+                .collect { data ->
+                    when (data) {
+                        is Resource.Loading -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = true,
+                                    error = null,
+                                    feedback = ""
                                 )
                             }
                         }
