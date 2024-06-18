@@ -2,7 +2,7 @@ package one.reevdev.autolingo.core.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import one.reevdev.autolingo.core.data.remote.model.AnswerFeedback
+import one.reevdev.autolingo.core.data.datasource.remote.model.AnswerFeedback
 import one.reevdev.autolingo.core.data.repository.IExerciseRepository
 import one.reevdev.autolingo.core.data.utils.Resource
 import one.reevdev.autolingo.core.domain.model.FillInTheBlankQuestion

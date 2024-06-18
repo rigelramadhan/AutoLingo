@@ -1,13 +1,13 @@
-package one.reevdev.autolingo.core.data.remote.model
+package one.reevdev.autolingo.core.data.datasource.remote.model
 
 import com.google.gson.annotations.SerializedName
 
 data class GeneratedQuestion(
 
-	@field:SerializedName("data")
+    @field:SerializedName("data")
 	val data: Data? = null,
 
-	@field:SerializedName("status")
+    @field:SerializedName("status")
 	val status: String? = null
 )
 

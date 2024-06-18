@@ -1,8 +1,8 @@
 package one.reevdev.autolingo.core.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import one.reevdev.autolingo.core.data.remote.model.AnswerFeedback
-import one.reevdev.autolingo.core.data.remote.model.GeneratedQuestion
+import one.reevdev.autolingo.core.data.datasource.remote.model.AnswerFeedback
+import one.reevdev.autolingo.core.data.datasource.remote.model.GeneratedQuestion
 import one.reevdev.autolingo.core.data.utils.Resource
 
 interface IExerciseRepository {

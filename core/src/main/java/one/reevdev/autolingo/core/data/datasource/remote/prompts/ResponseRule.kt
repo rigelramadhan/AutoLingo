@@ -1,4 +1,4 @@
-package one.reevdev.autolingo.core.data.prompts
+package one.reevdev.autolingo.core.data.datasource.remote.prompts
 
 object ResponseRule {
     private const val JSON_GENERAL_RULE= """

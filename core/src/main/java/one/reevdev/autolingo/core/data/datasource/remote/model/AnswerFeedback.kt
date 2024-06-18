@@ -1,13 +1,13 @@
-package one.reevdev.autolingo.core.data.remote.model
+package one.reevdev.autolingo.core.data.datasource.remote.model
 
 import com.google.gson.annotations.SerializedName
 
 data class AnswerFeedback(
 
-	@field:SerializedName("feedback")
+    @field:SerializedName("feedback")
 	val feedback: Feedback? = null,
 
-	@field:SerializedName("userAnswer")
+    @field:SerializedName("userAnswer")
 	val userAnswer: String? = null
 )
 

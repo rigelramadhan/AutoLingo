@@ -1,6 +1,6 @@
 package one.reevdev.autolingo.core.domain.utils
 
-import one.reevdev.autolingo.core.data.remote.model.GeneratedQuestion
+import one.reevdev.autolingo.core.data.datasource.remote.model.GeneratedQuestion
 import one.reevdev.autolingo.core.domain.model.FillInTheBlankQuestion
 import one.reevdev.autolingo.core.domain.model.MultipleChoiceQuestion
 

@@ -1,4 +1,4 @@
-package one.reevdev.autolingo.core.data.prompts
+package one.reevdev.autolingo.core.data.datasource.remote.prompts
 
 object QuestionPrompt {
     val generateMultipleChoice = """
