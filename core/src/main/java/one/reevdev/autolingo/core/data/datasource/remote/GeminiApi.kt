@@ -3,6 +3,7 @@ package one.reevdev.autolingo.core.data.datasource.remote
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.Content
 import com.google.ai.client.generativeai.type.content
+import com.google.ai.client.generativeai.type.generationConfig
 import one.reevdev.autolingo.core.BuildConfig
 import one.reevdev.autolingo.core.data.datasource.local.model.ChatHistory
 import one.reevdev.autolingo.core.data.datasource.remote.model.AnswerFeedback
@@ -20,7 +21,10 @@ class GeminiApi @Inject constructor() {
     private val generativeModel: GenerativeModel by lazy {
         GenerativeModel(
             modelName = "gemini-1.5-flash",
-            apiKey = BuildConfig.API_KEY
+            apiKey = BuildConfig.API_KEY,
+            generationConfig = generationConfig {
+                responseMimeType = "application/json"
+            }
         )
     }
 

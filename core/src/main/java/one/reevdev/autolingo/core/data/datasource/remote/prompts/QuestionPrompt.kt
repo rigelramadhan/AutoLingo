@@ -19,8 +19,10 @@ object QuestionPrompt {
     """.trimIndent()
 
     val requestFillInBlankFeedback = """
-        This is the user's answer (give constructive feedback to the user and why it is correct/wrong. 
+        Give constructive feedback to the user and why it is correct/wrong. 
         If it's close in definition, you can give it as correct but explain the more appropriate answer. But if it's
-        wrong grammatically, say that it's wrong and give a hint the the incorrect part is the grammar part):
+        wrong grammatically, say that it's wrong and give a hint the the incorrect part is the grammar part.
+        
+        User's answer:
     """.trimIndent()
 }
